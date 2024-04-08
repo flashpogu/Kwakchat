@@ -1,5 +1,6 @@
 import User from "../models/userModel.js";
 import bcryptjs from "bcryptjs";
+import jwt from "jsonwebtoken";
 import { generateTokenAndSetCookie } from "../utils/generateToken.js";
 
 export const signup = async (req, res) => {
@@ -95,6 +96,42 @@ export const logout = (req, res) => {
     res.status(200).json({ message: "Logged out successfully" });
   } catch (error) {
     console.log("Error in logout", error.message);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+export const google = async (req, res) => {
+  try {
+    const user = await User.findOne({ email: req.body.email });
+    if (user) {
+      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+      const { password: hashedPassword, ...rest } = user._doc;
+      res.cookie("jwt", token, { httpOnly: true }).status(200).json(rest);
+    } else {
+      const generatedPassword = Math.random().toString(36).slice(-8);
+      const hashedPassword = bcryptjs.hashSync(generatedPassword, 10);
+      const newUser = new User({
+        email: req.body.email,
+        username:
+          req.body.name.split(" ").join("").toLowerCase() +
+          Math.floor(Math.random() * 1000).toString(),
+        password: hashedPassword,
+        fullName: req.body.name,
+        profilePic: req.body.photo,
+        gender: req.body.gender,
+      });
+      await newUser.save();
+      const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET);
+      const { password: hashedPassword2, ...rest } = newUser._doc;
+      res
+        .cookie("jwt", token, {
+          httpOnly: true,
+        })
+        .status(200)
+        .json(rest);
+    }
+  } catch (error) {
+    console.log("Error in login with google", error.message);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
