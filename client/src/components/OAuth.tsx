@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { app } from "@/firebase";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { ReactNode } from "react";
+import toast from "react-hot-toast";
 interface OAuthProps {
   children: ReactNode;
 }
@@ -25,6 +26,11 @@ export default function OAuth({ children }: OAuthProps) {
         }),
       });
       await res.json();
+      if (res.ok) {
+        toast.success("Logged in Successfully!");
+      } else {
+        toast.error("Something went wrong");
+      }
     } catch (error) {
       console.log("could not login with Google", error);
     }
