@@ -1,11 +1,7 @@
 import { createContext, useContext, useState } from "react";
 
-interface AuthContextType {
-  authUser: string | null;
-  setAuthUser: React.Dispatch<React.SetStateAction<string | null>>;
-}
-
-export const AuthContext = createContext<AuthContextType | null>(null);
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const AuthContext = createContext<any | null>(null);
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const useAuthContext = () => {
@@ -26,7 +22,7 @@ export const AuthContextProvider: React.FC<AuthContextProviderProps> = ({
 }) => {
   const storedUser = localStorage.getItem("chat-user");
   const initialAuthUser = storedUser ? JSON.parse(storedUser) : null;
-  const [authUser, setAuthUser] = useState<string | null>(initialAuthUser);
+  const [authUser, setAuthUser] = useState(initialAuthUser);
 
   return (
     <AuthContext.Provider value={{ authUser, setAuthUser }}>
