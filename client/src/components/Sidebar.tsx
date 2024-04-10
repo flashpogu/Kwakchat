@@ -36,7 +36,7 @@ export default function Sidebar() {
     }
   };
   return (
-    <div className="flex flex-col min-w-[30%] h-screen gap-4 px-3 pt-5 pb-2 bg-gray-100 overflow-y-scroll">
+    <div className="flex flex-col min-w-[35%] h-screen gap-4 px-3 pt-5 pb-2 bg-gray-100">
       {/* User Info  */}
       <div className="flex items-center justify-between pb-4">
         <div className="flex gap-4">
@@ -62,7 +62,7 @@ export default function Sidebar() {
           />
         </div>
       </div>
-      <div className="bg-white h-full rounded-2xl py-4 flex flex-col gap-8">
+      <div className="bg-white h-screen rounded-2xl py-4 flex flex-col gap-8 overflow-y-scroll">
         <div className="flex justify-between items-center px-6 py-3 rounded-3xl w-[90%] self-center bg-gray-100">
           <input
             placeholder="Search"

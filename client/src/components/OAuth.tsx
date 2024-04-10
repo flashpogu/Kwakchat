@@ -51,13 +51,12 @@ export default function OAuth({ children }: OAuthProps) {
     }
   };
   return (
-    <Button
-      disabled={loading}
-      onClick={handleGoogle}
-      variant="outline"
-      className="w-full"
-    >
-      {children}
+    <Button onClick={handleGoogle} variant="outline" className="w-full">
+      {loading ? (
+        <div className="loading loading-spinner text-white"></div>
+      ) : (
+        children
+      )}
     </Button>
   );
 }

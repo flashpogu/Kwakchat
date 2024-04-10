@@ -132,13 +132,12 @@ export default function Signup() {
                 </SelectContent>
               </Select>
             </div>
-            <Button
-              disabled={loading}
-              onClick={handleSubmit}
-              type="submit"
-              className="w-full"
-            >
-              Create an account
+            <Button onClick={handleSubmit} type="submit" className="w-full">
+              {loading ? (
+                <div className="loading loading-spinner text-white"></div>
+              ) : (
+                "Create an account"
+              )}
             </Button>
             <OAuth>Sign up Google</OAuth>
           </div>

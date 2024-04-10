@@ -93,7 +93,11 @@ export default function Login() {
               type="submit"
               className="w-full"
             >
-              Login
+              {loading ? (
+                <div className="loading loading-spinner text-white"></div>
+              ) : (
+                "Login"
+              )}
             </Button>
             <OAuth>Login with Google</OAuth>
           </div>

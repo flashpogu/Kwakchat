@@ -15,14 +15,12 @@ export default function Conversations() {
         const res = await fetch("/api/users/");
         const data = await res.json();
         setFetchedData(data);
-        console.log(data);
       };
       fetchUsers();
     } catch (error) {
       console.log(error);
     }
   }, []);
-  console.log(fetchedData);
   return (
     <div className="flex flex-col">
       {fetchedData.map((user) => (
@@ -30,6 +28,7 @@ export default function Conversations() {
           key={user._id}
           fullName={user.fullName}
           profilePic={user.profilePic}
+          _id={user._id}
         />
       ))}
     </div>

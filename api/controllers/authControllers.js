@@ -47,6 +47,9 @@ export const signup = async (req, res) => {
     if (newUser) {
       await newUser.save();
 
+      // Generate JWT token here
+      generateTokenAndSetCookie(newUser._id, res);
+
       res.status(201).json({
         _id: newUser._id,
         fullName: newUser.fullName,
@@ -104,7 +107,9 @@ export const google = async (req, res) => {
   try {
     const user = await User.findOne({ email: req.body.email });
     if (user) {
-      const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET);
+      const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+        expiresIn: "15d",
+      });
       const { password: hashedPassword, ...rest } = user._doc;
       res.cookie("jwt", token, { httpOnly: true }).status(200).json(rest);
     } else {
@@ -121,7 +126,9 @@ export const google = async (req, res) => {
         gender: req.body.gender,
       });
       await newUser.save();
-      const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET);
+      const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
+        expiresIn: "15d",
+      });
       const { password: hashedPassword2, ...rest } = newUser._doc;
       res
         .cookie("jwt", token, {
