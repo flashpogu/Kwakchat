@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Message from "./Message";
 import useConveresation from "@/store/useConversation";
 import SkeletonMsg from "./SkeletonMsg";
@@ -7,6 +7,7 @@ interface msgType {
   senderId: string;
   messageText: string;
   createdAt: string;
+  _id: string;
 }
 export default function Messages() {
   const [loading, setLoading] = useState(false);
@@ -27,17 +28,26 @@ export default function Messages() {
     };
     if (selectedConversation?._id) getMessages();
   }, [selectedConversation._id, setMessages]);
+
+  const lastMessageRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    setTimeout(() => {
+      lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, 100);
+  }, [messages]);
   return (
     <div className="px-4 flex-1 h-[84vh] overflow-y-scroll">
       {loading ? (
         <SkeletonMsg />
       ) : (
         messages.map((msg: msgType) => (
-          <Message
-            senderId={msg.senderId}
-            messageText={msg.messageText}
-            createdAt={msg.createdAt}
-          />
+          <div key={msg._id} ref={lastMessageRef}>
+            <Message
+              senderId={msg.senderId}
+              messageText={msg.messageText}
+              createdAt={msg.createdAt}
+            />
+          </div>
         ))
       )}
       {!loading && messages.length === 0 && (

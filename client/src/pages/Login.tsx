@@ -62,7 +62,7 @@ export default function Login() {
               Enter your username and password
             </p>
           </div>
-          <div className="grid gap-4">
+          <form onSubmit={handleSubmit} className="grid gap-4">
             <div className="grid gap-2">
               <Label htmlFor="username">Username</Label>
               <Input
@@ -87,12 +87,7 @@ export default function Login() {
                 required
               />
             </div>
-            <Button
-              disabled={loading}
-              onClick={handleSubmit}
-              type="submit"
-              className="w-full"
-            >
+            <Button disabled={loading} type="submit" className="w-full">
               {loading ? (
                 <div className="loading loading-spinner text-white"></div>
               ) : (
@@ -100,7 +95,7 @@ export default function Login() {
               )}
             </Button>
             <OAuth>Login with Google</OAuth>
-          </div>
+          </form>
           <div className="mt-4 text-center text-sm">
             Don&apos;t have an account?{" "}
             <Link to="/signup" className="cursor-pointer">

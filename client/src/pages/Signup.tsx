@@ -60,7 +60,6 @@ export default function Signup() {
       } else {
         toast.error("Something went wrong");
       }
-      console.log(data);
     } catch (error) {
       setLoading(false);
       console.log(error);
@@ -84,7 +83,7 @@ export default function Signup() {
           <CardDescription>Enter your details to join Kwakchat</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid gap-4">
+          <form onSubmit={handleSubmit} className="grid gap-4">
             <div className="grid gap-2">
               <Label htmlFor="fullname">Full Name</Label>
               <Input
@@ -132,7 +131,7 @@ export default function Signup() {
                 </SelectContent>
               </Select>
             </div>
-            <Button onClick={handleSubmit} type="submit" className="w-full">
+            <Button type="submit" className="w-full">
               {loading ? (
                 <div className="loading loading-spinner text-white"></div>
               ) : (
@@ -140,7 +139,7 @@ export default function Signup() {
               )}
             </Button>
             <OAuth>Sign up Google</OAuth>
-          </div>
+          </form>
           <div className="mt-4 text-center text-sm">
             Already have an account?{" "}
             <Link to="/login" className="underline">

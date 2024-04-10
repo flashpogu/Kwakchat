@@ -4,12 +4,23 @@ import { HiLogout } from "react-icons/hi";
 import { CiSearch } from "react-icons/ci";
 import { useAuthContext } from "@/context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import useConveresation from "@/store/useConversation";
+
+interface UserData {
+  _id: string;
+  fullName: string;
+  profilePic: string;
+}
 
 export default function Sidebar() {
+  const { setSelectedConversation } = useConveresation();
+  const { fetchedData } = useGetConveresation();
+
   const { authUser, setAuthUser } = useAuthContext();
   const [loading, setLoading] = useState(false);
+  const [search, setSearch] = useState("");
   const navigate = useNavigate();
   const signOut = async () => {
     setLoading(true);
@@ -34,6 +45,22 @@ export default function Sidebar() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleSubmit = (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+    if (!search) return;
+    if (search.length < 3) {
+      return toast.error("Search term must be at least 3 characters long");
+    }
+
+    const conversation = fetchedData.find((c) =>
+      c.fullName.toLowerCase().includes(search.toLowerCase())
+    );
+    if (conversation) {
+      setSelectedConversation(conversation);
+      setSearch("");
+    } else toast.error("No such user found");
   };
   return (
     <div className="flex flex-col min-w-[35%] h-screen gap-4 px-3 pt-5 pb-2 bg-gray-100">
@@ -63,18 +90,42 @@ export default function Sidebar() {
         </div>
       </div>
       <div className="bg-white h-screen rounded-2xl py-4 flex flex-col gap-8 overflow-y-scroll">
-        <div className="flex justify-between items-center px-6 py-3 rounded-3xl w-[90%] self-center bg-gray-100">
+        <form
+          onSubmit={handleSubmit}
+          className="flex justify-between items-center px-6 py-3 rounded-3xl w-[90%] self-center bg-gray-100"
+        >
           <input
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
             placeholder="Search"
             className="outline-none bg-gray-100 w-full"
             type="text"
           />
-          <CiSearch />
-        </div>
+          <button type="submit">
+            <CiSearch />
+          </button>
+        </form>
         <div>
           <Conversations />
         </div>
       </div>
     </div>
   );
+}
+
+function useGetConveresation() {
+  const [fetchedData, setFetchedData] = useState<UserData[]>([]);
+  useEffect(() => {
+    try {
+      const fetchUsers = async () => {
+        const res = await fetch("/api/users/");
+        const data = await res.json();
+        setFetchedData(data);
+      };
+      fetchUsers();
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+  return { fetchedData };
 }
