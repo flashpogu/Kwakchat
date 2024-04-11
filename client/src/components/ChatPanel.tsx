@@ -6,6 +6,7 @@ import { useEffect } from "react";
 
 export default function ChatPanel() {
   const { selectedConversation, setSelectedConversation } = useConveresation();
+  console.log(selectedConversation);
 
   useEffect(() => {
     // cleanup function
@@ -13,7 +14,7 @@ export default function ChatPanel() {
   }, [setSelectedConversation]);
 
   return (
-    <div className="bg-gray-100 w-full md:min-w-[450px] flex flex-col px-9 py-6">
+    <div className="bg-gray-100 w-full md:min-w-[450px] h-screen flex flex-col px-9 py-6">
       {!selectedConversation ? (
         <NoChatSelected />
       ) : (

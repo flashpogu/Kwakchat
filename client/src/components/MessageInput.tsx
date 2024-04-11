@@ -1,12 +1,14 @@
 import useConveresation from "@/store/useConversation";
 import { useState } from "react";
 import { IoSend } from "react-icons/io5";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
 
 export default function MessageInput() {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
   const { messages, setMessages, selectedConversation } = useConveresation();
+  const isAboveMediumScreen = useMediaQuery("(min-width: 600px)");
 
   const sendMessage = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
@@ -37,7 +39,10 @@ export default function MessageInput() {
     }
   };
   return (
-    <form onSubmit={sendMessage} className="px-4 my-3">
+    <form
+      onSubmit={sendMessage}
+      className={`px-4 my-3 ${!isAboveMediumScreen && "w-screen"}`}
+    >
       <div className="flex justify-between items-center px-6 py-3 rounded-3xl w-full self-center bg-white">
         <input
           onChange={(e) => setMessage(e.target.value)}

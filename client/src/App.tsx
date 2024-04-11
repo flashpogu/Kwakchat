@@ -4,9 +4,14 @@ import Signup from "./pages/Signup";
 import { Toaster } from "react-hot-toast";
 import Home from "./pages/Home";
 import { useAuthContext } from "./context/AuthContext";
+import useConveresation from "./store/useConversation";
+import MsgMobile from "./components/MsgMobile";
+import { useMediaQuery } from "./hooks/useMediaQuery";
 
 export default function App() {
   const { authUser } = useAuthContext();
+  const { selectedConversation } = useConveresation();
+  const isAboveMediumScreen = useMediaQuery("(min-width: 600px)");
   return (
     <BrowserRouter>
       <Routes>
@@ -21,6 +26,16 @@ export default function App() {
         <Route
           path="/signup"
           element={authUser ? <Navigate to="/" /> : <Signup />}
+        />
+        <Route
+          path="/chat"
+          element={
+            selectedConversation && !isAboveMediumScreen ? (
+              <MsgMobile />
+            ) : (
+              <Navigate to="/" />
+            )
+          }
         />
       </Routes>
       <Toaster position="top-center" />
