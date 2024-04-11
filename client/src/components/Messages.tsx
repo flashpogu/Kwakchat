@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import Message from "./Message";
 import useConveresation from "@/store/useConversation";
 import SkeletonMsg from "./SkeletonMsg";
+import useListenMessages from "@/hooks/useListenMessages";
 
 interface msgType {
   senderId: string;
@@ -12,6 +13,7 @@ interface msgType {
 export default function Messages() {
   const [loading, setLoading] = useState(false);
   const { messages, setMessages, selectedConversation } = useConveresation();
+  useListenMessages();
   useEffect(() => {
     const getMessages = async () => {
       setLoading(true);
