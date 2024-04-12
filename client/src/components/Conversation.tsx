@@ -20,7 +20,7 @@ export default function Conversation({
   const isOnline = onlineUsers.includes(_id);
   return (
     <div
-      className={`flex relative gap-4 items-center cursor-pointer hover:bg-gray-100 py-4 ${
+      className={`flex relative gap-4 items-center cursor-pointer hover:bg-gray-100 px-3 py-4 ${
         isSelected ? "bg-gray-300 hover:bg-gray-300" : ""
       }`}
       onClick={() => setSelectedConversation({ fullName, profilePic, _id })}

@@ -10,7 +10,7 @@ export default function MsgMobile() {
   return (
     <div className="relative">
       <div className="bg-gray-100 w-full md:min-w-[450px] flex flex-col py-6">
-        <div className={messages.length === 0 ? "m-0" : "mb-16"}>
+        <div className={messages.length === 0 ? "m-0" : "mb-2"}>
           <Messages />
           <div
             className="fixed top-5 left-5 z-50 text-gray-800 bg-gray-200 rounded-full p-2 cursor-pointer"

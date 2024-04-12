@@ -38,7 +38,11 @@ export default function Messages() {
     }, 100);
   }, [messages]);
   return (
-    <div className="bg-gray-100 px-4 flex-1 md:h-[84vh] h-[92vh] overflow-y-scroll ">
+    <div
+      className={`bg-gray-100 px-4 flex-1 md:h-[84vh] h-[92vh] overflow-y-scroll ${
+        messages.length > 8 ? "mb-14" : ""
+      }`}
+    >
       {loading ? (
         <SkeletonMsg />
       ) : (

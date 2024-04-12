@@ -36,7 +36,7 @@ export const SocketContextProvider: React.FC<SocketContextProviderProps> = ({
   useEffect(() => {
     let socket: Socket<DefaultEventsMap, DefaultEventsMap> | null = null;
     if (authUser) {
-      socket = io("http://localhost:9000", {
+      socket = io("https://kwakchat.onrender.com/", {
         query: {
           userId: authUser._id,
         },
